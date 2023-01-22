@@ -2,6 +2,7 @@ package com.algaworks.algalogapi.api.controller;
 
 import com.algaworks.algalogapi.domain.model.Cliente;
 import com.algaworks.algalogapi.domain.repository.ClienteRepository;
+import com.algaworks.algalogapi.domain.service.CatalogoClienteService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
@@ -27,11 +28,12 @@ import java.util.List;
 public class ClienteController {
 
     private ClienteRepository clienteRepository;
+    private CatalogoClienteService catalogoClienteService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+        return catalogoClienteService.salvar(cliente);
     }
 
     @PutMapping("/{id}")
@@ -41,7 +43,7 @@ public class ClienteController {
         }
         cliente.setId(id);
 
-        final Cliente clienteUpdated = clienteRepository.save(cliente);
+        final Cliente clienteUpdated = catalogoClienteService.salvar(cliente);
 
         return ResponseEntity.ok(clienteUpdated);
     }
@@ -51,7 +53,7 @@ public class ClienteController {
         if (!clienteRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        clienteRepository.deleteById(id);
+        catalogoClienteService.excluir(id);
 
         return ResponseEntity.noContent().build();
     }
