@@ -1,0 +1,1 @@
+ALTER TABLE  entrega  RENAME COLUMN data_finalizado to data_finalizacao;
